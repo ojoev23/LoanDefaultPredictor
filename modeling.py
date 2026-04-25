@@ -15,7 +15,7 @@ y = df['target']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Train model
-rf = RandomForestClassifier()
+rf = RandomForestClassifier(n_estimators=100, max_depth=10, class_weight='balanced', random_state=42, n_jobs=-1)
 rf.fit(X_train, y_train)
 
 # Final splits
@@ -23,7 +23,7 @@ y_pred = rf.predict(X_test)
 
 # Confusion Matrix
 cm = confusion_matrix(y_test, y_pred)
-
+print(cm)
 plt.figure(figsize=(8, 6))
 sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
             linewidths=1, linecolor='black',
@@ -43,7 +43,7 @@ plt.show()
 # Classification Report
 report_dict = classification_report(y_test, y_pred, output_dict=True)
 report_df = pd.DataFrame(report_dict).transpose()
-
+print(report_df)
 metrics_to_plot = report_df.drop('support', axis=1)
 
 plt.figure(figsize=(8, 5))
